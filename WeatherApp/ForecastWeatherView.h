@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  ForecastWeatherView.h
 //  WeatherApp
 //
 //  Created by ZhenzhenXu on 4/30/13.
@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface ForecastWeatherView : UIView
 
+- (void)createDetailViews;
 @end
