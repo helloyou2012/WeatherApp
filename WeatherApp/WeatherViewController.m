@@ -7,24 +7,36 @@
 //
 
 #import "WeatherViewController.h"
-#import <QuartzCore/QuartzCore.h>
 #import "ForecastWeatherView.h"
+#import "SVProgressHUD.h"
 
 @implementation WeatherViewController
 
 @synthesize scrollView=_scrollView;
 @synthesize curWeatherView=_curWeatherView;
+@synthesize forecastWeatherView=_forecastWeatherView;
+@synthesize dayWeatherRequest=_dayWeatherRequest;
+@synthesize forecastWeatherRequest=_forecastWeatherRequest;
 @synthesize headerView=_headerView;
 @synthesize timer=_timer;
 @synthesize imageList=_imageList;
+@synthesize dictType=_dictType;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-    _imageList=[[NSMutableArray alloc] initWithObjects:@"bg.jpg", @"bg2.jpg", @"bg3.jpg", nil];
+    _imageList=[[NSMutableArray alloc] initWithObjects:@"show_image_1.png", @"show_image_2.png", @"show_image_3.png", @"show_image_4.png", nil];
     [self createGradientBackground:self.view.bounds with:[_imageList objectAtIndex:0]];
     page=1;
+    
+    _dayWeatherRequest=[[DayWeatherRequest alloc] initRequest];
+    _dayWeatherRequest.delegate=self;
+    [_dayWeatherRequest createConnection];
+    
+    _forecastWeatherRequest=[[ForecastWeatherRequest alloc] initRequest];
+    _forecastWeatherRequest.delegate=self;
+    [_forecastWeatherRequest createConnection];
 }
 
 - (void)createGradientBackground:(CGRect)rect with:(NSString*)bgurl{
@@ -53,7 +65,7 @@
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     if (self.timer==nil) {
-        self.timer=[NSTimer scheduledTimerWithTimeInterval:15.0f target:self selector:@selector(switchImages) userInfo:nil repeats:YES];
+        self.timer=[NSTimer scheduledTimerWithTimeInterval:10.0f target:self selector:@selector(switchImages) userInfo:nil repeats:YES];
     }
 }
 
@@ -64,7 +76,7 @@
     transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
     transition.type = kCATransitionFade;
     transition.delegate = self;
-    [self.view.layer addAnimation:transition forKey:nil];
+    [self.view.layer addAnimation:transition forKey:@"EaseInOut"];
     
     NSString *imageUrl = [_imageList objectAtIndex:page];
     [self createGradientBackground:self.view.bounds with:imageUrl];
@@ -86,25 +98,32 @@
         _scrollView.backgroundColor=[UIColor colorWithWhite:0.0f alpha:alpha];
         _headerView.backgroundColor=[UIColor colorWithWhite:0.0f alpha:alpha];
     }else if (sheight>260){
-        _scrollView.backgroundColor=[UIColor colorWithWhite:0.0f alpha:0.7f];
-        _headerView.backgroundColor=[UIColor colorWithWhite:0.0f alpha:0.7f];
+        _scrollView.backgroundColor=[UIColor colorWithWhite:0.0f alpha:0.5f];
+        _headerView.backgroundColor=[UIColor colorWithWhite:0.0f alpha:0.5f];
     }
 }
 
 - (void)createViews{
     _headerView=[[WeatherHeaderView alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+    //[_headerView.backBtn addTarget:self action:@selector(backToMain) forControlEvents:UIControlEventTouchUpInside];
+    [_headerView.refreshBtn addTarget:self action:@selector(refreshData) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_headerView];
     
-    _curWeatherView=[[CurrentDayWeatherView alloc] initWithFrame:CGRectMake(0, 0, 320, self.view.frame.size.height-44.0f)];
+    CGRect rect=self.view.bounds;
+    rect.origin.y=44.0f;
+    rect.size.height-=44.0f;
+    _scrollView.frame=rect;
+    
+    _curWeatherView=[[CurrentDayWeatherView alloc] initWithFrame:CGRectMake(0, 0, 320, rect.size.height)];
     [_curWeatherView fillViewWith:nil];
     UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(singleTapGestureCaptured:)];
     [_curWeatherView addGestureRecognizer:singleTap];
     [_scrollView addSubview:_curWeatherView];
     
-    ForecastWeatherView *forecastView=[[ForecastWeatherView alloc] initWithFrame:CGRectMake(8, _curWeatherView.frame.origin.y+_curWeatherView.frame.size.height, 304, 208)];
-    [_scrollView addSubview:forecastView];
+    _forecastWeatherView=[[ForecastWeatherView alloc] initWithFrame:CGRectMake(8, _curWeatherView.frame.origin.y+_curWeatherView.frame.size.height, 304, 208)];
+    [_scrollView addSubview:_forecastWeatherView];
     
-    _scrollView.contentSize=CGSizeMake(320, forecastView.frame.origin.y+forecastView.frame.size.height+60.0f);
+    _scrollView.contentSize=CGSizeMake(320, _forecastWeatherView.frame.origin.y+_forecastWeatherView.frame.size.height+60.0f);
     _scrollView.backgroundColor=[UIColor clearColor];
     _scrollView.showsVerticalScrollIndicator=NO;
     _scrollView.delegate=self;
@@ -119,6 +138,33 @@
         rect.origin=CGPointMake(0, self.view.bounds.size.height-208.0f);
     }
     [_scrollView scrollRectToVisible:rect animated:YES];
+}
+
+- (void)refreshData{
+    [_dayWeatherRequest createConnection];
+    [_forecastWeatherRequest createConnection];
+    [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeGradient];
+}
+
+-(void) forecastWeatherRequestFinished:(NSDictionary*)data withError:(NSString*)error{
+    if (error) {
+        [SVProgressHUD showErrorWithStatus:error];
+    }else{
+        NSDictionary *dict=[data objectForKey:@"weatherinfo"];
+        [_forecastWeatherView fillViewWith:dict];
+        [_curWeatherView fillViewWith:dict];
+        NSString *dateTime=[NSString stringWithFormat:@"%@ %@",[dict objectForKey:@"date_y"],[dict objectForKey:@"week"]];
+        _headerView.dateLabel.text=dateTime;
+    }
+}
+
+-(void) dayWeatherRequestFinished:(NSDictionary*)data withError:(NSString*)error{
+    [SVProgressHUD dismiss];
+    if (error) {
+        [SVProgressHUD showErrorWithStatus:error];
+    }else{
+        [_curWeatherView fillCurrentTempWith:[data objectForKey:@"weatherinfo"]];
+    }
 }
 
 @end

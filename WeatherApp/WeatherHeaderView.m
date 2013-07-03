@@ -12,6 +12,7 @@
 
 @synthesize backBtn=_backBtn;
 @synthesize refreshBtn=_refreshBtn;
+@synthesize dateLabel=_dateLabel;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -33,13 +34,13 @@
         cityLabel.text=@"松江";
         [self addSubview:cityLabel];
         
-        UILabel *dateLabel=[[UILabel alloc] initWithFrame:CGRectMake((frame.size.width-200.0f)/2.0f, 24, 200, 16)];
-        dateLabel.font=[UIFont systemFontOfSize:14.0f];
-        dateLabel.textColor=[UIColor whiteColor];
-        dateLabel.backgroundColor=[UIColor clearColor];
-        dateLabel.textAlignment=NSTextAlignmentCenter;
-        dateLabel.text=@"2013年5月1日 星期日";
-        [self addSubview:dateLabel];
+        _dateLabel=[[UILabel alloc] initWithFrame:CGRectMake((frame.size.width-200.0f)/2.0f, 24, 200, 16)];
+        _dateLabel.font=[UIFont systemFontOfSize:14.0f];
+        _dateLabel.textColor=[UIColor whiteColor];
+        _dateLabel.backgroundColor=[UIColor clearColor];
+        _dateLabel.textAlignment=NSTextAlignmentCenter;
+        //_dateLabel.text=@"2013年5月1日 星期日";
+        [self addSubview:_dateLabel];
     }
     return self;
 }

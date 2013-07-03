@@ -7,7 +7,6 @@
 //
 
 #import "CurrentDayWeatherView.h"
-#import "GetCurrentDayWeather.h"
 
 static NSString *bundleURL = @"weather_icon.bundle/icon/top_condition_60x60/";
 
@@ -24,11 +23,6 @@ static NSString *bundleURL = @"weather_icon.bundle/icon/top_condition_60x60/";
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        GetCurrentDayWeather *crtweather=[[GetCurrentDayWeather alloc]init];
-        crtweather.delegate=self;
-        [crtweather getWeather];
-        
-
         [self createViews];
     }
     return self;
@@ -73,48 +67,31 @@ static NSString *bundleURL = @"weather_icon.bundle/icon/top_condition_60x60/";
     [self addSubview:_curTempLabel];
 }
 
-- (void)fillViewWith:(NSDictionary*)dict{
-    
-    
-    _weatherView.image=[UIImage imageNamed:[NSString stringWithFormat:@"%@%@",bundleURL,[weather_dict objectForKey:@"imagename"]]];
-    _weatherLabel.text=[weather_dict objectForKey:@"weather"];
-    _upTempLabel.text=[weather_dict objectForKey:@"temp"];
-    _downTempLabel.text=[weather_dict objectForKey:@"lowtemp"];
-    _curTempLabel.text=[weather_dict objectForKey:@"uptemp"];
+- (void)fillCurrentTempWith:(NSDictionary*)dict{
+    _curTempLabel.text=[NSString stringWithFormat:@"%@°", [dict objectForKey:@"temp"]];
 }
--(void) passWeatherInfo:(NSMutableDictionary *)weather
-{
-    //[self createViews];
-    weather_dict=[[NSMutableDictionary alloc]init];
-    NSArray *allkeys=[weather allKeys];
-    for(NSString *string in allkeys)
-    {
-        [weather_dict setObject:[weather objectForKey:string] forKey:string];
-    }
-    //[self fillViewWith:weather];
-    
-    
-    ForecastWeatherView *fctweather=[[ForecastWeatherView alloc]init];
-    fctweather.delegate=self;
-    [fctweather getWeatherInfo];
-}
--(void) currentweather:(NSMutableDictionary*)current_weather
-{
-    NSArray *allkeys=[current_weather allKeys];
-    for(NSString *string in allkeys)
-    {
-        [weather_dict setObject:[current_weather objectForKey:string] forKey:string];
-    }
-    [self fillViewWith:weather_dict];
 
+-(void) fillViewWith:(NSDictionary *)weather{
+    _weatherLabel.text=[weather objectForKey:@"weather1"];
+    NSString *plistPath=[[NSBundle mainBundle] pathForResource:@"Weather" ofType:@"plist"];
+    NSDictionary *image_dict=[[NSDictionary alloc] initWithContentsOfFile:plistPath];
+    //Image
+    NSString *imageKey=[NSString stringWithFormat:@"img%d",1];
+    NSString *image=[weather objectForKey:imageKey];
+    _weatherView.image=[UIImage imageNamed:[NSString stringWithFormat:@"%@%@",bundleURL,[image_dict objectForKey:image]]];
+    //Temp
+    NSString *tempKey=[NSString stringWithFormat:@"temp%d", 1];
+    NSString *temp=[weather objectForKey:tempKey];
+    NSArray *temps=[self parserTemp:temp];
+    if (temps&&temps.count>1) {
+        _upTempLabel.text=[NSString stringWithFormat:@"%@°",[temps objectAtIndex:1]];
+        _downTempLabel.text=[NSString stringWithFormat:@"%@°",[temps objectAtIndex:0]];
+    }
 }
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
+
+- (NSArray*)parserTemp:(NSString*)temp{
+    temp=[temp stringByReplacingOccurrencesOfString:@"℃" withString:@""];
+    return [temp componentsSeparatedByString:@"~"];
 }
-*/
 
 @end

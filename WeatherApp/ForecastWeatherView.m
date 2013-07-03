@@ -7,13 +7,11 @@
 //
 
 #import "ForecastWeatherView.h"
-//#import "GetForecastWeather.h"
 
 static NSString *bundleURL = @"weather_icon.bundle/icon/daily_forecast_70x70/";
 
 @implementation ForecastWeatherView
 
-@synthesize delegate=_delegate;
 @synthesize dayLabels=_dayLabels;
 @synthesize imageViews=_imageViews;
 @synthesize upTempLabels=_upTempLabels;
@@ -42,16 +40,8 @@ static NSString *bundleURL = @"weather_icon.bundle/icon/daily_forecast_70x70/";
         self.backgroundColor=[UIColor colorWithWhite:0.0f alpha:0.5f];
         
         [self createDetailViews];
-        [self getWeatherInfo];
     }
     return self;
-}
--(void)getWeatherInfo
-{
-    GetForecastWeather *fcweather=[[GetForecastWeather alloc]init];
-    fcweather.delegate=self;
-    [fcweather getWeather];
-
 }
 
 - (void)createDetailViews{
@@ -92,7 +82,7 @@ static NSString *bundleURL = @"weather_icon.bundle/icon/daily_forecast_70x70/";
     }
 }
 
--(void) passWeatherInfo:(NSMutableDictionary *)weather
+-(void) fillViewWith:(NSDictionary *)weather
 {
     NSString *plistPath=[[NSBundle mainBundle] pathForResource:@"Weather" ofType:@"plist"];
     NSDictionary *image_dict=[[NSDictionary alloc] initWithContentsOfFile:plistPath];
@@ -113,9 +103,9 @@ static NSString *bundleURL = @"weather_icon.bundle/icon/daily_forecast_70x70/";
         if (temps&&temps.count>1) {
             NSLog(@"%@",temps);
             UILabel *upLabel=[_upTempLabels objectAtIndex:i];
-            upLabel.text=[NSString stringWithFormat:@"%@°",[temps objectAtIndex:0]];
+            upLabel.text=[NSString stringWithFormat:@"%@°",[temps objectAtIndex:1]];
             UILabel *downLabel=[_downTempLabels objectAtIndex:i];
-            downLabel.text=[NSString stringWithFormat:@"%@°",[temps objectAtIndex:1]];
+            downLabel.text=[NSString stringWithFormat:@"%@°",[temps objectAtIndex:0]];
         }
     }
 }

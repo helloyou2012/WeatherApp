@@ -49,6 +49,13 @@
     // has enough information to create the NSURLResponse.
     // NSLog(@"response=%@",response);
     [_receivedData setLength:0];
+    
+    NSInteger statusCode = [((NSHTTPURLResponse *)response) statusCode];
+    if (statusCode > 400)
+    {
+        [connection cancel];  // stop connecting; no more delegate messages
+        [_delegate dayWeatherRequestFinished:nil withError:@"网络连接失败！"];
+    }
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data

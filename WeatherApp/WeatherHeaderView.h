@@ -13,5 +13,6 @@
 
 @property (nonatomic, strong) UIButton *backBtn;
 @property (nonatomic, strong) UIButton *refreshBtn;
+@property (nonatomic, strong) UILabel *dateLabel;
 
 @end
