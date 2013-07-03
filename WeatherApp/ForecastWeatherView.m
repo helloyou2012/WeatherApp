@@ -7,10 +7,17 @@
 //
 
 #import "ForecastWeatherView.h"
+//#import "GetForecastWeather.h"
 
 static NSString *bundleURL = @"weather_icon.bundle/icon/daily_forecast_70x70/";
 
 @implementation ForecastWeatherView
+
+@synthesize delegate=_delegate;
+@synthesize dayLabels=_dayLabels;
+@synthesize imageViews=_imageViews;
+@synthesize upTempLabels=_upTempLabels;
+@synthesize downTempLabels=_downTempLabels;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -33,14 +40,25 @@ static NSString *bundleURL = @"weather_icon.bundle/icon/daily_forecast_70x70/";
         imageView.backgroundColor=[UIColor clearColor];
         [self addSubview:imageView];
         self.backgroundColor=[UIColor colorWithWhite:0.0f alpha:0.5f];
+        
         [self createDetailViews];
+        [self getWeatherInfo];
     }
     return self;
 }
+-(void)getWeatherInfo
+{
+    GetForecastWeather *fcweather=[[GetForecastWeather alloc]init];
+    fcweather.delegate=self;
+    [fcweather getWeather];
+
+}
 
 - (void)createDetailViews{
-    NSArray *images=[NSArray arrayWithObjects:@"clear_day", @"cloudy_day_night", @"fair_day", @"flash_flood_day_night", @"snow_day_night", nil];
-    NSArray *names=[NSArray arrayWithObjects:@"星期一", @"星期二", @"星期三", @"星期四", @"星期五", nil];
+    _dayLabels=[[NSMutableArray alloc] init];
+    _imageViews=[[NSMutableArray alloc] init];
+    _upTempLabels=[[NSMutableArray alloc] init];
+    _downTempLabels=[[NSMutableArray alloc] init];
     for (int i=0; i<5; i++) {
         CGFloat curHeight=i*33.5f+30.0f;
         
@@ -48,12 +66,12 @@ static NSString *bundleURL = @"weather_icon.bundle/icon/daily_forecast_70x70/";
         dayLabel.font=[UIFont systemFontOfSize:17.0f];
         dayLabel.textColor=[UIColor whiteColor];
         dayLabel.backgroundColor=[UIColor clearColor];
-        dayLabel.text=[names objectAtIndex:i];
+        [_dayLabels addObject:dayLabel];
         [self addSubview:dayLabel];
         
         UIImageView *imageView=[[UIImageView alloc] initWithFrame:CGRectMake(8+128, curHeight+2, 30, 30)];
-        imageView.image=[UIImage imageNamed:[NSString stringWithFormat:@"%@%@",bundleURL,[images objectAtIndex:i]]];
         imageView.backgroundColor=[UIColor clearColor];
+        [_imageViews addObject:imageView];
         [self addSubview:imageView];
         
         UILabel *upTempLabel=[[UILabel alloc] initWithFrame:CGRectMake(8+178, curHeight+7, 55, 20)];
@@ -61,7 +79,7 @@ static NSString *bundleURL = @"weather_icon.bundle/icon/daily_forecast_70x70/";
         upTempLabel.textColor=[UIColor whiteColor];
         upTempLabel.backgroundColor=[UIColor clearColor];
         upTempLabel.textAlignment=NSTextAlignmentRight;
-        upTempLabel.text=@"23°";
+        [_upTempLabels addObject:upTempLabel];
         [self addSubview:upTempLabel];
         
         UILabel *lowTempLabel=[[UILabel alloc] initWithFrame:CGRectMake(8+178+55, curHeight+7, 55, 20)];
@@ -69,20 +87,51 @@ static NSString *bundleURL = @"weather_icon.bundle/icon/daily_forecast_70x70/";
         lowTempLabel.textColor=[UIColor whiteColor];
         lowTempLabel.backgroundColor=[UIColor clearColor];
         lowTempLabel.textAlignment=NSTextAlignmentRight;
-        lowTempLabel.text=@"12°";
+        [_downTempLabels addObject:lowTempLabel];
         [self addSubview:lowTempLabel];
     }
 }
 
-
-
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
+-(void) passWeatherInfo:(NSMutableDictionary *)weather
 {
-    // Drawing code
+    NSString *plistPath=[[NSBundle mainBundle] pathForResource:@"Weather" ofType:@"plist"];
+    NSDictionary *image_dict=[[NSDictionary alloc] initWithContentsOfFile:plistPath];
+    
+    for (NSInteger i=0; i<5; i++) {
+        //Week
+        UILabel *dayLabel=[_dayLabels objectAtIndex:i];
+        dayLabel.text=[self getWeekOffset:i from:[NSDate date]];
+        //Image
+        NSString *imageKey=[NSString stringWithFormat:@"img%d",2*i+3];
+        NSString *image=[weather objectForKey:imageKey];
+        UIImageView *imageView=[_imageViews objectAtIndex:i];
+        imageView.image=[UIImage imageNamed:[NSString stringWithFormat:@"%@%@",bundleURL,[image_dict objectForKey:image]]];
+        //Temp
+        NSString *tempKey=[NSString stringWithFormat:@"temp%d", i+2];
+        NSString *temp=[weather objectForKey:tempKey];
+        NSArray *temps=[self parserTemp:temp];
+        if (temps&&temps.count>1) {
+            NSLog(@"%@",temps);
+            UILabel *upLabel=[_upTempLabels objectAtIndex:i];
+            upLabel.text=[NSString stringWithFormat:@"%@°",[temps objectAtIndex:0]];
+            UILabel *downLabel=[_downTempLabels objectAtIndex:i];
+            downLabel.text=[NSString stringWithFormat:@"%@°",[temps objectAtIndex:1]];
+        }
+    }
 }
-*/
+
+- (NSArray*)parserTemp:(NSString*)temp{
+    temp=[temp stringByReplacingOccurrencesOfString:@"℃" withString:@""];
+    return [temp componentsSeparatedByString:@"~"];
+}
+
+- (NSString*)getWeekOffset:(NSInteger)offset from:(NSDate*)date{
+    NSArray *daySymbols = [[NSArray alloc] initWithObjects:@"星期日",@"星期一",@"星期二",@"星期三",@"星期四",@"星期五",@"星期六", nil];
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *comps = [gregorian components:NSWeekdayCalendarUnit fromDate:date];
+    int weekday = [comps weekday];
+    NSInteger cur=(offset+weekday)%7;
+    return [daySymbols objectAtIndex:cur];
+}
 
 @end

@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CE76F1A817339F8200C3679A /* GetCurrentDayWeather.m in Sources */ = {isa = PBXBuildFile; fileRef = CE76F1A717339F8200C3679A /* GetCurrentDayWeather.m */; };
+		CE76F1AB17339FA800C3679A /* GetForecastWeather.m in Sources */ = {isa = PBXBuildFile; fileRef = CE76F1AA17339FA800C3679A /* GetForecastWeather.m */; };
+		CE76F1B81733B36700C3679A /* WeatherRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = CE76F1B71733B36600C3679A /* WeatherRequest.m */; };
+		CE76F1BA1733CC3700C3679A /* Weather.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE76F1B91733CC3700C3679A /* Weather.plist */; };
 		DD62E349172FB72700B003CB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD62E348172FB72700B003CB /* UIKit.framework */; };
 		DD62E34B172FB72700B003CB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD62E34A172FB72700B003CB /* Foundation.framework */; };
 		DD62E34D172FB72700B003CB /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD62E34C172FB72700B003CB /* CoreGraphics.framework */; };
@@ -23,6 +27,7 @@
 		DD62E36F172FB72700B003CB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD62E34A172FB72700B003CB /* Foundation.framework */; };
 		DD62E377172FB72700B003CB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = DD62E375172FB72700B003CB /* InfoPlist.strings */; };
 		DD62E37A172FB72700B003CB /* WeatherAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DD62E379172FB72700B003CB /* WeatherAppTests.m */; };
+		DD62E384172FBA2400B003CB /* bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DD62E383172FBA2400B003CB /* bg.jpg */; };
 		DD62E386172FBA8200B003CB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD62E385172FBA8200B003CB /* QuartzCore.framework */; };
 		DD62E389172FBD4A00B003CB /* CurrentDayWeatherView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD62E388172FBD4A00B003CB /* CurrentDayWeatherView.m */; };
 		DD62E490172FC12900B003CB /* weather_icon.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DD62E48F172FC12900B003CB /* weather_icon.bundle */; };
@@ -35,6 +40,8 @@
 		DD62E4AE17306C5000B003CB /* Forecast@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DD62E4AD17306C5000B003CB /* Forecast@2x.png */; };
 		DD62E4B11730818700B003CB /* bg2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DD62E4B01730818700B003CB /* bg2.jpg */; };
 		DD62E4B3173086B000B003CB /* bg3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DD62E4B2173086B000B003CB /* bg3.jpg */; };
+		DDDD09B1173A43D600FD37FA /* DayWeatherRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = DDDD09B0173A43D600FD37FA /* DayWeatherRequest.m */; };
+		DDDD09B4173A440000FD37FA /* ForecastWeatherRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = DDDD09B3173A440000FD37FA /* ForecastWeatherRequest.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +55,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		CE76F1A617339F8200C3679A /* GetCurrentDayWeather.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetCurrentDayWeather.h; sourceTree = "<group>"; };
+		CE76F1A717339F8200C3679A /* GetCurrentDayWeather.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetCurrentDayWeather.m; sourceTree = "<group>"; };
+		CE76F1A917339FA800C3679A /* GetForecastWeather.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetForecastWeather.h; sourceTree = "<group>"; };
+		CE76F1AA17339FA800C3679A /* GetForecastWeather.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetForecastWeather.m; sourceTree = "<group>"; };
+		CE76F1B61733B36500C3679A /* WeatherRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeatherRequest.h; sourceTree = "<group>"; };
+		CE76F1B71733B36600C3679A /* WeatherRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeatherRequest.m; sourceTree = "<group>"; };
+		CE76F1B91733CC3700C3679A /* Weather.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Weather.plist; sourceTree = "<group>"; };
 		DD62E345172FB72700B003CB /* WeatherApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD62E348172FB72700B003CB /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		DD62E34A172FB72700B003CB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -70,6 +84,7 @@
 		DD62E376172FB72700B003CB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		DD62E378172FB72700B003CB /* WeatherAppTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WeatherAppTests.h; sourceTree = "<group>"; };
 		DD62E379172FB72700B003CB /* WeatherAppTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WeatherAppTests.m; sourceTree = "<group>"; };
+		DD62E383172FBA2400B003CB /* bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bg.jpg; sourceTree = "<group>"; };
 		DD62E385172FBA8200B003CB /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		DD62E387172FBD4A00B003CB /* CurrentDayWeatherView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrentDayWeatherView.h; sourceTree = "<group>"; };
 		DD62E388172FBD4A00B003CB /* CurrentDayWeatherView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrentDayWeatherView.m; sourceTree = "<group>"; };
@@ -85,6 +100,10 @@
 		DD62E4AD17306C5000B003CB /* Forecast@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Forecast@2x.png"; sourceTree = "<group>"; };
 		DD62E4B01730818700B003CB /* bg2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bg2.jpg; sourceTree = "<group>"; };
 		DD62E4B2173086B000B003CB /* bg3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bg3.jpg; sourceTree = "<group>"; };
+		DDDD09AF173A43D600FD37FA /* DayWeatherRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DayWeatherRequest.h; sourceTree = "<group>"; };
+		DDDD09B0173A43D600FD37FA /* DayWeatherRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DayWeatherRequest.m; sourceTree = "<group>"; };
+		DDDD09B2173A440000FD37FA /* ForecastWeatherRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForecastWeatherRequest.h; sourceTree = "<group>"; };
+		DDDD09B3173A440000FD37FA /* ForecastWeatherRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForecastWeatherRequest.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,6 +165,7 @@
 		DD62E34E172FB72700B003CB /* WeatherApp */ = {
 			isa = PBXGroup;
 			children = (
+				DDDD09AE173A43B900FD37FA /* Request */,
 				DD62E4B51730886800B003CB /* WeatherImages */,
 				DD62E4B41730881B00B003CB /* WeatherViews */,
 				DD62E4AF1730816E00B003CB /* bg_images */,
@@ -162,6 +182,7 @@
 		DD62E34F172FB72700B003CB /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				CE76F1B91733CC3700C3679A /* Weather.plist */,
 				DD62E350172FB72700B003CB /* WeatherApp-Info.plist */,
 				DD62E351172FB72700B003CB /* InfoPlist.strings */,
 				DD62E354172FB72700B003CB /* main.m */,
@@ -209,6 +230,7 @@
 			children = (
 				DD62E4B2173086B000B003CB /* bg3.jpg */,
 				DD62E4B01730818700B003CB /* bg2.jpg */,
+				DD62E383172FBA2400B003CB /* bg.jpg */,
 			);
 			name = bg_images;
 			sourceTree = "<group>";
@@ -222,6 +244,12 @@
 				DD62E497172FEB0E00B003CB /* WeatherHeaderView.m */,
 				DD62E49A172FFD2C00B003CB /* ForecastWeatherView.h */,
 				DD62E49B172FFD2C00B003CB /* ForecastWeatherView.m */,
+				CE76F1A617339F8200C3679A /* GetCurrentDayWeather.h */,
+				CE76F1A717339F8200C3679A /* GetCurrentDayWeather.m */,
+				CE76F1A917339FA800C3679A /* GetForecastWeather.h */,
+				CE76F1AA17339FA800C3679A /* GetForecastWeather.m */,
+				CE76F1B61733B36500C3679A /* WeatherRequest.h */,
+				CE76F1B71733B36600C3679A /* WeatherRequest.m */,
 			);
 			name = WeatherViews;
 			sourceTree = "<group>";
@@ -233,6 +261,17 @@
 				DD62E491172FC43F00B003CB /* weather_btn */,
 			);
 			name = WeatherImages;
+			sourceTree = "<group>";
+		};
+		DDDD09AE173A43B900FD37FA /* Request */ = {
+			isa = PBXGroup;
+			children = (
+				DDDD09AF173A43D600FD37FA /* DayWeatherRequest.h */,
+				DDDD09B0173A43D600FD37FA /* DayWeatherRequest.m */,
+				DDDD09B2173A440000FD37FA /* ForecastWeatherRequest.h */,
+				DDDD09B3173A440000FD37FA /* ForecastWeatherRequest.m */,
+			);
+			name = Request;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -311,6 +350,7 @@
 				DD62E35D172FB72700B003CB /* Default@2x.png in Resources */,
 				DD62E35F172FB72700B003CB /* Default-568h@2x.png in Resources */,
 				DD62E362172FB72700B003CB /* MainStoryboard.storyboard in Resources */,
+				DD62E384172FBA2400B003CB /* bg.jpg in Resources */,
 				DD62E490172FC12900B003CB /* weather_icon.bundle in Resources */,
 				DD62E494172FC46000B003CB /* Info_high@2x.png in Resources */,
 				DD62E495172FC46000B003CB /* Info_low@2x.png in Resources */,
@@ -319,6 +359,7 @@
 				DD62E4AE17306C5000B003CB /* Forecast@2x.png in Resources */,
 				DD62E4B11730818700B003CB /* bg2.jpg in Resources */,
 				DD62E4B3173086B000B003CB /* bg3.jpg in Resources */,
+				CE76F1BA1733CC3700C3679A /* Weather.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -359,6 +400,11 @@
 				DD62E389172FBD4A00B003CB /* CurrentDayWeatherView.m in Sources */,
 				DD62E498172FEB0E00B003CB /* WeatherHeaderView.m in Sources */,
 				DD62E49C172FFD2C00B003CB /* ForecastWeatherView.m in Sources */,
+				CE76F1A817339F8200C3679A /* GetCurrentDayWeather.m in Sources */,
+				CE76F1AB17339FA800C3679A /* GetForecastWeather.m in Sources */,
+				CE76F1B81733B36700C3679A /* WeatherRequest.m in Sources */,
+				DDDD09B1173A43D600FD37FA /* DayWeatherRequest.m in Sources */,
+				DDDD09B4173A440000FD37FA /* ForecastWeatherRequest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

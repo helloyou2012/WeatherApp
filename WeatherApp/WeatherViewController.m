@@ -22,7 +22,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-    _imageList=[[NSMutableArray alloc] initWithObjects:@"bg2.jpg", @"bg3.jpg", nil];
+    _imageList=[[NSMutableArray alloc] initWithObjects:@"bg.jpg", @"bg2.jpg", @"bg3.jpg", nil];
     [self createGradientBackground:self.view.bounds with:[_imageList objectAtIndex:0]];
     page=1;
 }

@@ -7,8 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GetForecastWeather.h"
+#import "ForecastWeatherView.h"
 
-@interface CurrentDayWeatherView : UIView
+@interface CurrentDayWeatherView : UIView<WeatherInfoDelegage,CurrentWeatherDelegate>
+{
+    NSMutableDictionary *weather_dict;
+}
+
 
 @property (nonatomic, strong) UIImageView *weatherView;
 @property (nonatomic, strong) UILabel *weatherLabel;

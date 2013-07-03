@@ -7,6 +7,7 @@
 //
 
 #import "CurrentDayWeatherView.h"
+#import "GetCurrentDayWeather.h"
 
 static NSString *bundleURL = @"weather_icon.bundle/icon/top_condition_60x60/";
 
@@ -23,6 +24,11 @@ static NSString *bundleURL = @"weather_icon.bundle/icon/top_condition_60x60/";
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
+        GetCurrentDayWeather *crtweather=[[GetCurrentDayWeather alloc]init];
+        crtweather.delegate=self;
+        [crtweather getWeather];
+        
+
         [self createViews];
     }
     return self;
@@ -68,13 +74,40 @@ static NSString *bundleURL = @"weather_icon.bundle/icon/top_condition_60x60/";
 }
 
 - (void)fillViewWith:(NSDictionary*)dict{
-    _weatherView.image=[UIImage imageNamed:[NSString stringWithFormat:@"%@%@",bundleURL,@"clear_day"]];
-    _weatherLabel.text=@"晴";
-    _upTempLabel.text=@"18°";
-    _downTempLabel.text=@"11°";
-    _curTempLabel.text=@"22°";
+    
+    
+    _weatherView.image=[UIImage imageNamed:[NSString stringWithFormat:@"%@%@",bundleURL,[weather_dict objectForKey:@"imagename"]]];
+    _weatherLabel.text=[weather_dict objectForKey:@"weather"];
+    _upTempLabel.text=[weather_dict objectForKey:@"temp"];
+    _downTempLabel.text=[weather_dict objectForKey:@"lowtemp"];
+    _curTempLabel.text=[weather_dict objectForKey:@"uptemp"];
 }
+-(void) passWeatherInfo:(NSMutableDictionary *)weather
+{
+    //[self createViews];
+    weather_dict=[[NSMutableDictionary alloc]init];
+    NSArray *allkeys=[weather allKeys];
+    for(NSString *string in allkeys)
+    {
+        [weather_dict setObject:[weather objectForKey:string] forKey:string];
+    }
+    //[self fillViewWith:weather];
+    
+    
+    ForecastWeatherView *fctweather=[[ForecastWeatherView alloc]init];
+    fctweather.delegate=self;
+    [fctweather getWeatherInfo];
+}
+-(void) currentweather:(NSMutableDictionary*)current_weather
+{
+    NSArray *allkeys=[current_weather allKeys];
+    for(NSString *string in allkeys)
+    {
+        [weather_dict setObject:[current_weather objectForKey:string] forKey:string];
+    }
+    [self fillViewWith:weather_dict];
 
+}
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
